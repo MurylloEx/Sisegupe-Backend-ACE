@@ -33,7 +33,7 @@ router.post('/login', async (req: Request, res: Response) => {
 router.post('/register', async (req: Request, res: Response) => {
   try{
     let newUser = await createUser(req.body);
-    if (!(await getUserByEmail(<string>newUser.email)))
+    if (!!(await getUserByEmail(<string>newUser.email)))
       throw new Error('Usuário já existe no sistema. Tente um e-mail diferente.');
     newUser.password = sha256(<string>newUser.password);
     newUser.role = 1;
