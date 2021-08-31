@@ -6,6 +6,7 @@ import { Document } from "../models/Document.Model";
 import { getProjectById } from "../services/Project.Service";
 import { Project } from "../models/Project.Model";
 import { parseBearer } from "../../security/Authorize";
+import { DocumentType } from "../models/DocumentType.Enum";
 
 const router = Router();
 
@@ -13,11 +14,15 @@ router.get('/:fileGuid', async (req: Request, res: Response) => {
   try{
     let document = await getDocumentById(req.params.fileGuid);
     if (!!document){
-      let filePath = join(__dirname, '../../docs/', <string>document?.id);
-      return res.sendFile(filePath, (err) => {
-        if (!!err)
-          return res.status(404).json(notFound());
-      });
+      if (document.type == DocumentType.File){
+        let filePath = join(__dirname, '../../docs/', <string>document?.id);
+        return res.sendFile(filePath, (err) => {
+          if (!!err)
+            return res.status(404).json(notFound());
+        });
+      } else {
+        return res.status(200).json(ok(document));
+      }
     }
     return res.status(404).json(notFound());
   } catch(e){
@@ -37,13 +42,30 @@ router.post('/project/:projectId', async (req: Request, res: Response) => {
     if (!project){
       return res.status(404).json(notFound());
     }
-    let newDocument = Document.create({ fileName: file.name, project: project });
+    let newDocument = Document.create({ fileName: file.name, project: project, type: DocumentType.File });
     newDocument = await saveDocument(<Document>newDocument);
     file.mv(join(__dirname, '../../docs/', <string>newDocument.id), async (err: any) => {
       if (err)
         return res.status(400).json(badRequest());
       return res.json(ok(newDocument));
     });
+  }catch(e){
+    return res.status(400).json(badRequest(e));
+  }
+});
+
+router.post('/project/:projectId/link', async (req: Request, res: Response) => {
+  try{
+    const { fileLink } = req.body;
+    let projectId = req.params.projectId;
+    let project = <Project>await getProjectById(projectId);
+    
+    if (!project){
+      return res.status(404).json(notFound());
+    }
+
+    let newDocument = Document.create({ fileName: fileLink, project: project, type: DocumentType.Link });
+    return res.json(ok(await saveDocument(<Document>newDocument)));
   }catch(e){
     return res.status(400).json(badRequest(e));
   }

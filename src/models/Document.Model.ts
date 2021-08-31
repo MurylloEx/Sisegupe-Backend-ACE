@@ -1,5 +1,6 @@
 import { IsDefined, validateOrReject } from "class-validator";
 import { BaseEntity, BeforeInsert, BeforeUpdate, Column, Entity, JoinTable, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { DocumentType } from "./DocumentType.Enum";
 import { Project } from "./Project.Model";
 
 @Entity()
@@ -12,9 +13,12 @@ export class Document extends BaseEntity {
   @JoinTable()
   public project?: Project;
 
-  @IsDefined()
   @Column()
   public fileName?: string;
+
+  @IsDefined()
+  @Column()
+  public type?: DocumentType;
 
   @BeforeInsert()
   @BeforeUpdate()
