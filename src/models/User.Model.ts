@@ -23,12 +23,6 @@ export class User extends BaseEntity {
   public role?: number = 1;
 
   @IsDefined()
-  @MaxLength(64)
-  @MinLength(4)
-  @Column()
-  public lastname?: string;
-
-  @IsDefined()
   @IsEmail()
   @MaxLength(64)
   @MinLength(4)
