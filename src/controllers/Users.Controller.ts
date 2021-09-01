@@ -36,7 +36,7 @@ router.put('/:userId', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:userId/delete', async (req: Request, res: Response) => {
+router.post('/:userId/delete', async (req: Request, res: Response) => {
   try{
     if (!isAdmin(req))
       return res.status(401).json(unauthorized());
