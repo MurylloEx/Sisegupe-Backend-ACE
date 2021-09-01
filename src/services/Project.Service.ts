@@ -3,7 +3,7 @@ import { Project } from "../models/Project.Model";
 
 export async function getProjects(){
   return await getRepository(Project).find({
-    relations: ['author', 'fileDocuments', 'commentaries.author']
+    relations: ['author', 'fileDocuments']
   });
 }
 
