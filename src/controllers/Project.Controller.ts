@@ -53,7 +53,6 @@ router.post('/', async (req: Request, res: Response) => {
           })));
         }
       }
-      savedProject.fileDocuments = documents;
     }
 
     return res.json(ok(savedProject));
