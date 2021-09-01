@@ -1,5 +1,6 @@
 import { getRepository } from "typeorm";
 import { Project } from "../models/Project.Model";
+import { ProjectStage } from "../models/ProjectStage.Enum";
 
 export async function getProjects(){
   return await getRepository(Project).find({
@@ -28,4 +29,24 @@ export async function updateProject(project: Project, updatedProject: Project){
 
 export async function deleteProjectById(id: string){
   return await getRepository(Project).delete({id});
+}
+
+export async function getProjectsInfo(){
+  return {
+    AllProjects: await getRepository(Project).count(),
+    InProgress: await getRepository(Project).count({ projectStage: ProjectStage.InProgress }),
+    Finished: await getRepository(Project).count({ projectStage: ProjectStage.Finished })
+  }
+}
+
+export async function getProjectsChart(courseNames: string[]){
+  let chartData: any[] = [];
+  for (let k = 0; k < courseNames.length; k++){
+    chartData.push({
+      AllProjects: await getRepository(Project).count({ courseName: courseNames[k] }),
+      InProgress: await getRepository(Project).count({ courseName: courseNames[k], projectStage: ProjectStage.InProgress }),
+      Finished: await getRepository(Project).count({ courseName: courseNames[k], projectStage: ProjectStage.Finished })
+    });
+  }
+  return chartData;
 }
