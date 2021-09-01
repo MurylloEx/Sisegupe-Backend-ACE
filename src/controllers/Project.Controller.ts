@@ -7,6 +7,7 @@ import { isAdmin, parseBearer } from "../../security/Authorize";
 import { getUserById } from "../services/User.Service";
 import { saveDocument } from "../services/Document.Service";
 import { Document } from "../models/Document.Model";
+import { Project } from "../models/Project.Model";
 
 const router = Router();
 
@@ -40,7 +41,7 @@ router.post('/', async (req: Request, res: Response) => {
     if (!user)
       return res.status(401).json(unauthorized());
     
-    const newProject = await createProject(body);
+    const newProject = Project.create(<Project>body);
     newProject.author = user;
     const savedProject = await saveProject(newProject);
     let documents: Document[] = [];
