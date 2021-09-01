@@ -14,10 +14,10 @@ router.get('/projects', async (req: Request, res: Response) => {
 
 router.get('/courses', async (req: Request, res: Response) => {
   try {
-    const { coursesNames } = req.body;
-    if (!coursesNames || !Array.isArray(coursesNames))
+    const { courseNames } = req.body;
+    if (!courseNames || !Array.isArray(courseNames))
       return res.status(400).json(badRequest());
-    return res.status(200).json(ok(await getProjectsChart(coursesNames)));
+    return res.status(200).json(ok(await getProjectsChart(courseNames)));
   } catch(e){
     return res.status(404).json(notFound());
   }
