@@ -57,7 +57,6 @@ router.post('/', async (req: Request, res: Response) => {
           documents.push(await saveDocument(currentDocument));
         }
       }
-      newProject.fileDocuments = documents;
     }
 
     return res.json(ok(savedProject));
