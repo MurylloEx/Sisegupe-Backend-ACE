@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { badRequest, notFound, ok, unauthorized } from "../services/Response.Service";
-import { createProject, deleteProjectById } from "../services/Project.Service";
+import { deleteProjectById } from "../services/Project.Service";
 import { getProjectById, getProjects } from "../services/Project.Service";
 import { saveProject, updateProject } from "../services/Project.Service";
 import { isAdmin, parseBearer } from "../../security/Authorize";
@@ -8,6 +8,7 @@ import { getUserById } from "../services/User.Service";
 import { saveDocument } from "../services/Document.Service";
 import { Document } from "../models/Document.Model";
 import { Project } from "../models/Project.Model";
+import { DocumentType } from "../models/DocumentType.Enum";
 
 const router = Router();
 
@@ -49,10 +50,12 @@ router.post('/', async (req: Request, res: Response) => {
     if (!!fileLinks && Array.isArray(fileLinks)){
       for (let k = 0; k < fileLinks.length; k++){ 
         if (!!fileLinks[k].fileLink){ 
-          documents.push(await saveDocument(Document.create({ 
+          let currentDocument = Document.create({ 
             fileName: fileLinks[k].fileLink, 
-            project: savedProject 
-          })));
+            type: DocumentType.Link 
+          });
+          currentDocument.project = savedProject;
+          documents.push(await saveDocument(currentDocument));
         }
       }
     }
