@@ -36,7 +36,7 @@ router.post('/:projectId', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:commentaryId', async (req: Request, res: Response) => {
+router.post('/:commentaryId/delete', async (req: Request, res: Response) => {
   try{
     let commentary = await getCommentaryById(req.params.commentaryId);
     if (!commentary)

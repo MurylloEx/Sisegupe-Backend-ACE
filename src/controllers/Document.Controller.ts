@@ -71,7 +71,7 @@ router.post('/project/:projectId/link', async (req: Request, res: Response) => {
   }
 });
 
-router.delete('/:fileGuid', async (req: Request, res: Response) => {
+router.post('/:fileGuid/delete', async (req: Request, res: Response) => {
   try{
     let document = await getDocumentById(req.params.fileGuid);
     let jwt = parseBearer(req);

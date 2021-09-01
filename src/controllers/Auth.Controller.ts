@@ -1,10 +1,10 @@
 import sha256 from "sha256";
-import { Router, Request, Response } from "express";
 import { build } from "../../security/Jwt";
-import { badRequest, ok } from "../services/Response.Service";
+import { Router, Request, Response } from "express";
+import { saveUser } from "../services/User.Service";
 import { createUser } from "../services/User.Service";
 import { getUserByEmail } from "../services/User.Service";
-import { saveUser } from "../services/User.Service";
+import { badRequest, ok } from "../services/Response.Service";
 
 const router = Router();
 
