@@ -5,6 +5,8 @@ import { getProjectById, getProjects } from "../services/Project.Service";
 import { saveProject, updateProject } from "../services/Project.Service";
 import { isAdmin, parseBearer } from "../../security/Authorize";
 import { getUserById } from "../services/User.Service";
+import { saveDocument } from "../services/Document.Service";
+import { Document } from "../models/Document.Model";
 
 const router = Router();
 
@@ -26,17 +28,35 @@ router.get('/:projectId', async (req: Request, res: Response) => {
 
 router.post('/', async (req: Request, res: Response) => {
   try{
+    const { fileLinks, ...body } = req.body;
     let jwt = parseBearer(req);
+
     if (!jwt)
       return res.status(401).json(unauthorized());
-    const newProject = await createProject(req.body);
+
     let user = await getUserById(jwt.id);
-    if (!!user){
-      newProject.author = user;
-    } else {
+
+    if (!user)
       return res.status(401).json(unauthorized());
+    
+    const newProject = await createProject(body);
+    newProject.author = user;
+    const savedProject = await saveProject(newProject);
+    let documents: Document[] = [];
+
+    if (!!fileLinks && Array.isArray(fileLinks)){
+      for (let k = 0; k < fileLinks.length; k++){ 
+        if (!!fileLinks[k].fileLink){ 
+          documents.push(await saveDocument(Document.create({ 
+            fileName: fileLinks[k].fileLink, 
+            project: savedProject 
+          })));
+        }
+      }
+      savedProject.fileDocuments = documents;
     }
-    return res.json(ok(await saveProject(newProject)));
+
+    return res.json(ok(savedProject));
   } catch(e){
     return res.status(400).json(badRequest(e));
   }

@@ -2,7 +2,9 @@ import { getRepository } from "typeorm";
 import { Project } from "../models/Project.Model";
 
 export async function getProjects(){
-  return await getRepository(Project).find();
+  return await getRepository(Project).find({
+    relations: ['author', 'fileDocuments', 'commentaries.author']
+  });
 }
 
 export async function getProjectById(id: string){
