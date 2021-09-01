@@ -31,7 +31,6 @@ router.get('/:projectId', async (req: Request, res: Response) => {
 router.post('/', async (req: Request, res: Response) => {
   try{
     const { fileLinks, ...body } = req.body;
-    console.log(body)
     let jwt = parseBearer(req);
 
     if (!jwt)
