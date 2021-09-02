@@ -12,7 +12,7 @@ router.get('/projects', async (req: Request, res: Response) => {
   }
 });
 
-router.get('/courses', async (req: Request, res: Response) => {
+router.post('/courses', async (req: Request, res: Response) => {
   try {
     const { courseNames } = req.body;
     if (!courseNames || !Array.isArray(courseNames))
