@@ -28,3 +28,7 @@ export async function updateUser(user: User, updatedUser: User){
 export async function deleteUserById(id: string){
   return await getRepository(User).delete({id});
 }
+
+export async function changeUserById(id: string, updatedUser: User){
+  return await getRepository(User).update(id, updatedUser);
+}

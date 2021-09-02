@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { badRequest, notFound, ok, unauthorized } from "../services/Response.Service";
-import { deleteProjectById } from "../services/Project.Service";
+import { changeProjectById, deleteProjectById } from "../services/Project.Service";
 import { getProjectById, getProjects } from "../services/Project.Service";
 import { saveProject, updateProject } from "../services/Project.Service";
 import { isAdmin, parseBearer } from "../../security/Authorize";
@@ -74,8 +74,7 @@ router.put('/:projectId', async (req: Request, res: Response) => {
         return res.status(404).json(notFound());
       }
       const newProject = await updateProject(project, Project.create(<Project>req.body));
-      newProject.id = req.params.id;
-      return res.json(ok(await saveProject(newProject)));
+      return res.json(ok(await changeProjectById(req.params.projectId, newProject)));
     } else {
       return res.status(404).json(notFound());
     }

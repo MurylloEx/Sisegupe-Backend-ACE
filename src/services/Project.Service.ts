@@ -31,6 +31,10 @@ export async function deleteProjectById(id: string){
   return await getRepository(Project).delete({id});
 }
 
+export async function changeProjectById(id: string, updatedProject: Project){
+  return await getRepository(Project).update(id, updatedProject);
+}
+
 export async function getProjectsInfo(){
   return {
     AllProjects: await getRepository(Project).count(),

@@ -28,3 +28,7 @@ export async function updateDocument(document: Document, updatedDocument: Docume
 export async function deleteDocumentById(id: string){
   return await getRepository(Document).delete({id});
 }
+
+export async function changeDocumentById(id: string, updatedDocument: Document){
+  return await getRepository(Document).update(id, updatedDocument);
+}

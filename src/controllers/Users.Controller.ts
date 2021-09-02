@@ -1,6 +1,6 @@
 import { Router, Request, Response } from "express";
 import { isAdmin, parseBearer } from "../../security/Authorize";
-import { getUserById } from "../services/User.Service";
+import { changeUserById, getUserById } from "../services/User.Service";
 import { deleteUserById } from "../services/User.Service";
 import { saveUser, updateUser } from "../services/User.Service";
 import { badRequest, notFound, ok, unauthorized } from "../services/Response.Service";
@@ -27,7 +27,7 @@ router.put('/:userId', async (req: Request, res: Response) => {
         return res.status(401).json(unauthorized());
       const newUser = await updateUser(user, req.body);
       newUser.password = sha256(<string>newUser.password);
-      return res.json(ok(await saveUser(newUser)));
+      return res.json(ok(await changeUserById(req.params.userId, newUser)));
     } else {
       return res.status(404).json(notFound());
     }
