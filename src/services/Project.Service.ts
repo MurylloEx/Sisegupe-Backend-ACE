@@ -32,7 +32,8 @@ export async function deleteProjectById(id: string){
 }
 
 export async function changeProjectById(id: string, updatedProject: Project){
-  return await getRepository(Project).update(id, updatedProject);
+  updatedProject.id = id;
+  return await getRepository(Project).save(updatedProject);
 }
 
 export async function getProjectsInfo(){

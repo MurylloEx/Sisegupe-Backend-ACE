@@ -30,5 +30,6 @@ export async function deleteDocumentById(id: string){
 }
 
 export async function changeDocumentById(id: string, updatedDocument: Document){
-  return await getRepository(Document).update(id, updatedDocument);
+  updatedDocument.id = id;
+  return await getRepository(Document).save(updatedDocument);
 }

@@ -30,5 +30,6 @@ export async function deleteUserById(id: string){
 }
 
 export async function changeUserById(id: string, updatedUser: User){
-  return await getRepository(User).update(id, updatedUser);
+  updatedUser.id = id;
+  return await getRepository(User).save(updatedUser);
 }
