@@ -14,7 +14,7 @@ export class Project extends BaseEntity {
   public id?: string;
 
   @IsDefined()
-  @MaxLength(64)
+  @MaxLength(128)
   @MinLength(4)
   @Column()
   public title?: string;
