@@ -14,7 +14,7 @@ const router = Router();
 
 router.get('/all', async (req: Request, res: Response) => {
   try{
-    return res.json(ok(await getProjects()));
+    return res.json(ok((await getProjects()).reverse()));
   } catch(e){
     return res.status(400).json(badRequest(e));
   }
