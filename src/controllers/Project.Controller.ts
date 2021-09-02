@@ -73,7 +73,8 @@ router.put('/:projectId', async (req: Request, res: Response) => {
       if ((jwt.id != project.author?.id) && !isAdmin(req)){
         return res.status(404).json(notFound());
       }
-      const newProject = await updateProject(project, req.body);
+      const newProject = await updateProject(project, Project.create(<Project>req.body));
+      newProject.id = req.params.id;
       return res.json(ok(await saveProject(newProject)));
     } else {
       return res.status(404).json(notFound());
