@@ -14,7 +14,7 @@ export class Commentary extends BaseEntity {
 
   @IsDefined()
   @MaxLength(512)
-  @MinLength(8)
+  @MinLength(1)
   @Column()
   public text?: string;
 

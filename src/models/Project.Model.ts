@@ -20,12 +20,12 @@ export class Project extends BaseEntity {
   public title?: string;
 
   @IsDefined()
-  @MaxLength(2048)
+  @MaxLength(65536)
   @Column()
   public summary?: string;
   
   @IsDefined()
-  @MaxLength(64)
+  @MaxLength(128)
   @MinLength(4)
   @Column()
   public advisorName?: string;
